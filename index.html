@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Newspulse">
+<meta name="theme-color" content="#0a0a0a">
+<title>Newspulse</title>
+<link rel="apple-touch-icon" href="icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0a0a;--s1:#111;--s2:#1a1a1a;--s3:#222;
+  --b:rgba(255,255,255,.06);--b2:rgba(255,255,255,.11);
+  --text:#f2f0eb;--muted:rgba(242,240,235,.5);--dim:rgba(242,240,235,.28);
+  --gold:#d4a853;--gold2:#b8882d;
+  --red:#e05252;--blue:#4d8ff5;--green:#3daa6e;
+  --orange:#e07832;--purple:#8b6ee8;--teal:#3dc4c4;--pink:#e066a8;
+  --safe-top:env(safe-area-inset-top);
+  --safe-bottom:env(safe-area-inset-bottom);
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text)}
+body{display:flex;flex-direction:column;font-family:'Inter',sans-serif;font-weight:300;font-size:14px}
+.safe-top{height:var(--safe-top);background:var(--s1);flex-shrink:0;min-height:0}
+
+/* HEADER */
+header{background:var(--s1);flex-shrink:0;border-bottom:1px solid var(--b)}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;padding:10px 16px}
+.wordmark{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;letter-spacing:-.02em;line-height:1}
+.wordmark span{color:var(--gold)}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--red);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.live-label{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+.rbtn{display:flex;align-items:center;gap:5px;padding:7px 15px;background:var(--gold);color:#0a0a0a;border:none;border-radius:100px;font-size:11.5px;font-weight:500;font-family:inherit;cursor:pointer}
+.rbtn:active{opacity:.75}
+.rbtn:disabled{opacity:.4}
+.spin{width:10px;height:10px;border:1.5px solid rgba(10,10,10,.3);border-top-color:#0a0a0a;border-radius:50%;animation:sp .7s linear infinite;display:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* TICKER */
+.ticker{background:var(--red);display:flex;align-items:center;gap:0;overflow:hidden;flex-shrink:0}
+.ticker.hidden{display:none}
+.ticker-badge{padding:5px 10px;font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.3);white-space:nowrap;flex-shrink:0}
+.ticker-track{flex:1;overflow:hidden;padding:5px 0}
+.ticker-inner{display:flex;white-space:nowrap;animation:tkr 35s linear infinite}
+.ticker-inner span{font-size:11.5px;color:#fff;padding:0 24px}
+@keyframes tkr{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
+
+/* CAT PILLS */
+.cat-row{display:flex;gap:6px;padding:9px 14px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;border-bottom:1px solid var(--b)}
+.cat-row::-webkit-scrollbar{display:none}
+.cpill{padding:5px 13px;border-radius:100px;font-size:11px;cursor:pointer;border:1px solid var(--b2);color:var(--dim);background:transparent;white-space:nowrap;font-family:inherit;transition:all .15s;flex-shrink:0}
+.cpill.on{background:var(--gold);border-color:var(--gold);color:#0a0a0a;font-weight:500}
+
+/* MAIN */
+main{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.panel{display:none;flex-direction:column;flex:1;overflow:hidden}
+.panel.on{display:flex}
+.feed{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.feed::-webkit-scrollbar{display:none}
+
+/* TOP STORY */
+.hero{margin:12px 14px 0;background:var(--s1);border:1px solid var(--b2);border-radius:16px;overflow:hidden;cursor:pointer;text-decoration:none;display:block}
+.hero:active{opacity:.82}
+.hero-top{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 0}
+.hero-eyebrow{display:flex;align-items:center;gap:7px}
+.hero-label{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.hero-body{padding:8px 14px 14px}
+.hero-title{font-family:'Playfair Display',serif;font-size:1.2rem;line-height:1.35;color:var(--text);font-weight:700;margin-bottom:6px}
+.hero-summary{font-size:12.5px;color:var(--muted);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.hero-footer{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--b)}
+.hero-src{font-size:11px;color:var(--dim)}
+.hero-time{font-size:11px;color:var(--dim)}
+.hero-score{margin-left:auto;font-size:9.5px;padding:2px 7px;border-radius:100px;background:rgba(212,168,83,.12);color:var(--gold);letter-spacing:.04em}
+
+/* DIVIDER */
+.feed-divider{padding:12px 14px 5px;display:flex;align-items:center;gap:8px}
+.feed-divider-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
+.feed-divider-line{flex:1;height:0.5px;background:var(--b2)}
+
+/* NEWS ITEMS */
+.nitem{display:flex;gap:10px;padding:11px 14px;border-bottom:1px solid var(--b);text-decoration:none;cursor:pointer;align-items:flex-start}
+.nitem:active{background:var(--s1)}
+.nitem-num{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--dim);min-width:22px;line-height:1.1;flex-shrink:0;padding-top:2px}
+.nitem-body{flex:1;min-width:0}
+.nitem-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap}
+.ctag{font-size:9px;letter-spacing:.07em;text-transform:uppercase;padding:2px 6px;border-radius:100px;font-weight:500;flex-shrink:0}
+.nsrc{font-size:10.5px;color:var(--dim)}
+.ntime{font-size:10.5px;color:var(--dim);margin-left:auto;flex-shrink:0}
+.ntitle{font-size:13px;line-height:1.45;color:var(--text);font-weight:400}
+.nsummary{font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* CATEGORY TAG COLORS */
+.tg-global       {background:rgba(77,143,245,.14);color:var(--blue)}
+.tg-india        {background:rgba(224,82,82,.14);color:var(--red)}
+.tg-cricket      {background:rgba(61,170,110,.14);color:var(--green)}
+.tg-sports       {background:rgba(224,120,50,.14);color:var(--orange)}
+.tg-tech         {background:rgba(139,110,232,.14);color:var(--purple)}
+.tg-business     {background:rgba(212,168,83,.14);color:var(--gold)}
+.tg-science      {background:rgba(61,196,196,.14);color:var(--teal)}
+.tg-entertainment{background:rgba(224,102,168,.14);color:var(--pink)}
+
+/* SOURCES PANEL */
+.src-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px 40px}
+.src-body::-webkit-scrollbar{display:none}
+.sg-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:14px 0 8px;border-bottom:0.5px solid var(--b)}
+.sg-label:first-child{padding-top:0}
+.stog{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--b);cursor:pointer}
+.stog:last-child{border-bottom:none}
+.stog-l{display:flex;align-items:center;gap:10px}
+.sname{font-size:13px;color:var(--text)}
+.ssub{font-size:11px;color:var(--dim);margin-top:1px}
+.tog{width:44px;height:26px;border-radius:100px;background:var(--b2);position:relative;transition:background .2s;flex-shrink:0}
+.tog.on{background:var(--gold)}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.4);transition:transform .2s}
+.tog.on::after{transform:translateX(18px)}
+.about-box{background:var(--s1);border:1px solid var(--b);border-radius:12px;padding:14px 14px;font-size:12px;color:var(--muted);line-height:1.7;margin-top:4px}
+.ver{text-align:center;font-size:11px;color:var(--dim);padding:16px 0 4px}
+
+/* BOTTOM NAV */
+.bnav{background:var(--s1);border-top:1px solid var(--b);display:grid;grid-template-columns:repeat(2,1fr);padding-bottom:var(--safe-bottom);flex-shrink:0}
+.bni{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0 8px;cursor:pointer}
+.bni:active{opacity:.6}
+.bni-ico{font-size:20px;line-height:1}
+.bni-lbl{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);transition:color .15s}
+.bni.on .bni-lbl{color:var(--gold)}
+
+/* STATES */
+.statebox{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:5rem 2rem;text-align:center}
+.state-ico{font-size:3.5rem;opacity:.14}
+.state-txt{font-size:13px;color:var(--muted);line-height:1.65;max-width:270px}
+.err-txt{font-size:12px;color:var(--red);line-height:1.6;max-width:290px}
+.err-hint{font-size:11px;color:var(--dim);line-height:1.6;max-width:270px;margin-top:4px}
+.shimwrap{padding:8px 0}
+.shrow{padding:12px 14px;border-bottom:1px solid var(--b);display:flex;gap:10px}
+.shcol{display:flex;flex-direction:column;gap:6px;flex:1}
+.sh{background:linear-gradient(90deg,var(--s2) 0%,rgba(255,255,255,.04) 50%,var(--s2) 100%);background-size:200% 100%;animation:sh 1.4s infinite;border-radius:4px}
+@keyframes sh{to{background-position:-200% 0}}
+.notebar{padding:5px 14px;background:rgba(212,168,83,.07);border-bottom:1px solid rgba(212,168,83,.1);font-size:11px;color:rgba(212,168,83,.55);flex-shrink:0}
+</style>
+</head>
+<body>
+
+<div class="safe-top"></div>
+
+<header>
+  <div class="hdr-top">
+    <div class="wordmark">news<span>pulse</span></div>
+    <div class="hdr-right">
+      <div class="live-dot"></div>
+      <span class="live-label">Live</span>
+      <button class="rbtn" id="rbtn">
+        <div class="spin" id="spin"></div>
+        <span id="rlbl">↺ Refresh</span>
+      </button>
+    </div>
+  </div>
+  <!-- BREAKING TICKER -->
+  <div class="ticker hidden" id="ticker">
+    <div class="ticker-badge">⚡ Breaking</div>
+    <div class="ticker-track"><div class="ticker-inner" id="ticker-inner"></div></div>
+  </div>
+  <!-- CATEGORY PILLS -->
+  <div class="cat-row" id="cat-row">
+    <button class="cpill on" data-cat="all">All</button>
+    <button class="cpill" data-cat="global">🌍 World</button>
+    <button class="cpill" data-cat="india">🇮🇳 India</button>
+    <button class="cpill" data-cat="cricket">🏏 Cricket</button>
+    <button class="cpill" data-cat="sports">⚽ Sports</button>
+    <button class="cpill" data-cat="tech">💻 Tech</button>
+    <button class="cpill" data-cat="business">📈 Business</button>
+    <button class="cpill" data-cat="science">🔬 Science</button>
+    <button class="cpill" data-cat="entertainment">🎬 Film</button>
+  </div>
+</header>
+
+<main>
+  <!-- NEWS -->
+  <div class="panel on" id="panel-news">
+    <div id="notebar-wrap"></div>
+    <div class="feed" id="feed">
+      <div class="statebox">
+        <div class="state-ico">📰</div>
+        <div class="state-txt">Tap <strong style="color:var(--gold);font-weight:500">↺ Refresh</strong> to load today's top stories ranked by importance — global news, India, cricket, sports, tech and more.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOURCES -->
+  <div class="panel" id="panel-sources">
+    <div class="src-body">
+      <div class="sg-label">All sources</div>
+      <div id="src-list"></div>
+      <div class="sg-label" style="margin-top:20px">About</div>
+      <div class="about-box">Newspulse fetches live RSS feeds from 27+ trusted news sources and ranks stories by recency and importance using a smart scoring algorithm.<br><br>Completely free — no API key, no account, no cost. Works on personal WiFi.<br><br>Add to your iPhone home screen: Safari → Share → Add to Home Screen.</div>
+      <div class="ver">Newspulse v2.0 · Free & Open</div>
+    </div>
+  </div>
+</main>
+
+<div class="bnav">
+  <div class="bni on" data-p="news"><div class="bni-ico">📰</div><div class="bni-lbl">News</div></div>
+  <div class="bni" data-p="sources"><div class="bni-ico">⚙️</div><div class="bni-lbl">Sources</div></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
